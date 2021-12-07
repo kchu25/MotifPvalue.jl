@@ -19,6 +19,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/kchu25/MotifPvalue.jl",
+    repo="github.com/kchu25/MotifPvalue.jl.git",
     devbranch="main",
 )

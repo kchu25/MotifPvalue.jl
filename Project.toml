@@ -3,6 +3,11 @@ uuid = "639d9495-0bf7-4cd9-80c6-a19f5ec6f406"
 authors = ["Shane Kuei Hsien Chu (skchu@wustl.edu)"]
 version = "0.1.0"
 
+[deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+DocumenterTools = "35a29f4d-8980-5a13-9543-d66fff28ecb8"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
 [compat]
 julia = "1.6"
 
