@@ -51,23 +51,27 @@ Input:
 Output    
 * `α`: the highest score-threshold
 """
-function pval2score(pwm::Matrix{T}, pval::Real, ϵ=1e-1, k=10, bg=[.25,.25,.25,.25]) where T <: Real
+function pvalue2score(pwm::Matrix{T}, pval::Real, ϵ=1e-2, k=10, bg=[.25,.25,.25,.25]) where T <: Real
+    @assert 0 ≤ pval ≤ 1 "pvalue must be in [0,1]"
     @assert size(pwm,1) == 4 "The input matrix must have 4 and only 4 rows"
-    mpwm = min_score_range(pwm);
+    pwm_double64 = Double64.(pwm);
+    pval_double64 = Double64(pval);
+    bg_double64 = Double64.(bg);
+    mpwm = min_score_range(pwm_double64);
     m = size(pwm, 2);
     pwm_ϵ = round_pwm(mpwm, ϵ);
     E = calc_E(mpwm, pwm_ϵ);
     Q = create_Q(m);
-    Q = score_distribution(pwm_ϵ,worst_score(pwm_ϵ),Inf,bg);
-    α = find_largest_α(Q[m], pval);
+    Q = score_distribution(pwm_ϵ,worst_score(pwm_ϵ),Inf,bg_double64);
+    α = find_largest_α(Q[m], pval_double64);
 
-    @inbounds while !(pval_w_Qm(Q[m], α-E) ≈ pval_w_Qm(Q[m], α))
+    @inbounds while !(pval_w_Qm(Q[m], α-E) == pval_w_Qm(Q[m], α))
         # println("err: ", pval_w_Qm(Q[m], α-E) - pval_w_Qm(Q[m], α));
         ϵ = ϵ/k; 
         pwm_ϵ = round_pwm(mpwm, ϵ);
         E = calc_E(mpwm, pwm_ϵ);
         Q = create_Q(m);
-        Q = score_distribution(pwm_ϵ,α-E,α+E,bg);
+        Q = score_distribution(pwm_ϵ,α-E,α+E,bg_double64);
         #=
         note:
         Sometimes the score range is simply 
@@ -76,13 +80,12 @@ function pval2score(pwm::Matrix{T}, pval::Real, ϵ=1e-1, k=10, bg=[.25,.25,.25,.
         This happens when the error of the round matrix, E, is very 
         small (see definition 3 in Touzet and Varre's paper: 
         https://almob.biomedcentral.com/articles/10.1186/1748-7188-2-15)
-        When this happens we return α+E, so that we don't
-        underestimate the score for the threshold for the 
-        input p-value.
+        When this happens we return α.
         =#
         if isempty(Q[m])
-            α = α + E;
-            break;
+            # α = α + E;
+            # break;
+            return α
         end
         pval_ϵ = fast_pvalue(pwm_ϵ,α+E);
         δ = find_δ(Q[m],pval_ϵ,pval);

@@ -78,7 +78,7 @@ Note: Use a nested dictionary to represent the distribution Q
     call create_Q(m) to initialize such a distribution Q
         where m is the "width" of the PWM
 =#
-create_Q(m::Integer) = Dict{Int16,SortedDict{Float64,Float64}}(i==0 ? i=>SortedDict(0=>1) : i=>SortedDict() for i=0:m);
+create_Q(m::Integer) = Dict{Int16,SortedDict{Double64,Double64}}(i==0 ? i=>SortedDict(0=>1) : i=>SortedDict() for i=0:m);
 
 #=
 Input: 
@@ -147,4 +147,4 @@ function fast_pvalue(pwm::Matrix{T}, α::Real, bg=[.25,.25,.25,.25]) where T <: 
 end
 
 # return the sum of all the weights 
-Q_sum(Q_m::SortedDict{Float64,Float64}) = sum(v for v in values(Q_m));
+Q_sum(Q_m::SortedDict{Double64,Double64}) = sum(v for v in values(Q_m));

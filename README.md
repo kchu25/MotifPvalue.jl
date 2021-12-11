@@ -1,6 +1,5 @@
 # MotifPvalue
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://kchu25.github.io/MotifPvalue.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://kchu25.github.io/MotifPvalue.jl/dev)
 [![Build Status](https://github.com/kchu25/MotifPvalue.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/kchu25/MotifPvalue.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/kchu25/MotifPvalue.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/kchu25/MotifPvalue.jl)
@@ -30,8 +29,8 @@ https://almob.biomedcentral.com/articles/10.1186/1748-7188-2-15
     
     # Compute pvalue with pwm and score = 4
     score2pvalue(pwm, 4)
-    > 0.00020599365234375
+    > 0.00021457672119140625
 
     # Compute the score-threshold for p-value 1e-4
-    pval2score(pwm, 1e-4)
-    > 5.010000000000001
+    pvalue2score(pwm, 1e-4)
+    > 5.57

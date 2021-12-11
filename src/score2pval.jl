@@ -7,7 +7,7 @@ Input:
     E: the max column-wise error between matrix M and M_ϵ
 Output:
 =#
-function find_s(Q_m::SortedDict{Float64,Float64}, E::Real)
+function find_s(Q_m::SortedDict{T,T}, E::T) where T <: Real
     keys_ = collect(keys(Q_m)); ℓ = length(keys_);
     if ℓ > 1
         for i = 1:(ℓ-1)
@@ -33,23 +33,26 @@ Input:
 Output:
 * `pval`: p-value 
 """
-function score2pvalue(pwm::Matrix{T}, α::Real, ϵ=1e-1, k=100, bg=[.25,.25,.25,.25]) where T <: Real
+function score2pvalue(pwm::Matrix{T}, α::Real, ϵ=1e-2, k=10, bg=[.25,.25,.25,.25]) where T <: Real
     @assert size(pwm,1) == 4 "The input matrix must have 4 and only 4 rows"
-    mpwm = min_score_range(pwm);
+    pwm_double64 = Double64.(pwm);    
+    α_double64 = Double64(α);
+    bg_double64 = Double64.(bg);
+    mpwm = min_score_range(pwm_double64);
     m = size(mpwm,2);    
     β = best_score(mpwm)+1;
-    pval = 0; 
+    pval = Double64(0); 
     s = 0; 
     i = 1;
-    @inbounds while !(α ≈ s)
-        # println(α-s)
+    @inbounds while !(α_double64 ≈ s)
+        # println(α_double64-s)
         ϵ = i == 1 ? ϵ : ϵ/k; i+=1;
         # isinf(ϵ) || isnan(ϵ) && (println(i); break);
         pwm_ϵ = round_pwm(mpwm, ϵ);
         # any(isnan.(pwm_ϵ)) && (println(i); break);
         E = calc_E(mpwm, pwm_ϵ);
         Q = create_Q(m);
-        Q = score_distribution(pwm_ϵ, α-E, β, bg);
+        Q = score_distribution(pwm_ϵ, α-E, β, bg_double64);
         #=
         note: 
         Sometimes the score range is small 

@@ -1,11 +1,11 @@
 module MotifPvalue
 
 #### Dependencies ##################
-using DataStructures
+using DataStructures, DoubleFloats
 ####################################
 
 #### Exported methods and types ####
-export score2pvalue, pval2score
+export score2pvalue, pvalue2score
 ####################################
 
 #### Load files ####################
