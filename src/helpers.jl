@@ -66,7 +66,7 @@ The maximum error induced by the rounded pwm M_ϵ
     A positve real number that's the maximum error induced by the rounded pwm M_ϵ 
 =#
 function calc_E(pwm, pwm_rounded) 
-    sum(maximum(pwm[:,i]-pwm_rounded[:,i]) for i = size(pwm,2));
+    sum(maximum(pwm[:,i]-pwm_rounded[:,i]) for i = 1:size(pwm,2));
 end
 
 #=

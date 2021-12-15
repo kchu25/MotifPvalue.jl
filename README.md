@@ -29,7 +29,7 @@ https://almob.biomedcentral.com/articles/10.1186/1748-7188-2-15
     
     # Compute pvalue with pwm and score = 4
     score2pvalue(pwm, 4)
-    > 0.00021457672119140625
+    > 0.000213623046875
 
     # Compute the score-threshold for p-value 1e-4
     pvalue2score(pwm, 1e-4)
